@@ -1,0 +1,15 @@
+.has-errorts5 {
+    border-color: red !important;
+    border-width: 2px !important;
+
+}
+
+input:focus {
+    box-shadow: none !important;
+}
+
+.helper{
+    color: red !important;
+    background: yellow !important;
+    box-shadow: yellowgreen !important;
+}

@@ -80,7 +80,7 @@ angular.module('myApp.Task2', ['ngRoute'])
         let saltPass = $scope.password + myObj.userEmail;
         let hashPass = $scope.hashCode(saltPass);
         if (hashPass === myObj.userPassword){
-            alert("Welcome!");// реализовать переход по ссылке вместо приветствие
+            alert("Welcome!");// реализовать переход по ссылке вместо приветствия
             $rootScope.currentUserPoint = key;
         } else{
             $scope.password = '';

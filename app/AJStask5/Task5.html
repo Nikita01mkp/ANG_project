@@ -1,0 +1,50 @@
+<div style="color: white">
+    <div style="padding: 10px;width: 400px">
+        <h1>Home</h1>
+
+        <select class="form-control form-control-lg" ng-init="SelectedHome = '0'" style="text-align-last: center" ng-model="SelectedHome"
+                ng-change="GetInd(SelectedHome)">
+
+            <option value="{{$index}}" ng-repeat="Homes in mas  track by $index">{{Homes}}</option>
+        </select>
+
+
+    </div>
+
+    <div style="padding: 10px;width: 1000px">
+        <h1>Edit home</h1>
+        <div style="display: flex;" class="input-group">
+            <input class="form-control form-control-lg" placeholder="Inter the home name" ng-model="inputts5"
+                   ng-change="bkCol()" ng-class="hasErrTS5">
+            <div class="input-group-append">
+                <button class="input-group-text" ng-click="Save()" ng-model="baton" ng-class="hasErrBtn">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <div style="padding: 10px;width: 400px">
+        <h1>Room</h1>
+
+        <select class="form-control form-control-lg" ng-init="SelectedRoom = '0'" style="text-align-last: center" ng-model="SelectedRoom"
+                ng-change="GetIndRoom(SelectedRoom)">
+
+            <option value="{{$index}}" ng-repeat="Rooms in masOfRooms  track by $index">{{Rooms}}</option>
+        </select>
+
+
+    </div>
+
+    <div style="padding: 10px;width: 1000px">
+        <h1>Edit room</h1>
+        <div style="display: flex;" class="input-group">
+            <input class="form-control form-control-lg" placeholder="Inter the room name" ng-model="roomNm"
+                   ng-change="backColRoom()" ng-class="hasErrRoom">
+            <div class="input-group-append">
+                <button class="input-group-text" ng-click="saveRoomName()" ng-model="roomChng"
+                        ng-class="hasErrRoom">Save</button>
+            </div>
+        </div>
+    </div>
+
+
+</div>
