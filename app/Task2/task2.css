@@ -1,0 +1,31 @@
+
+.csome{
+    color: white;
+    font-size: 9pt;
+    margin: 10px;
+}
+
+.form-check {
+    display: flex;
+    align-items: center;
+    padding: 0!important;
+}
+
+
+
+.squaredOne {
+    width: 20px;
+    height: 20px;
+    box-shadow: inset 0px 1px 1px white, 0px 1px 3px rgba(0,0,0,0.5);
+}
+
+.T2link {
+    color: lawngreen; /* Цвет текста */
+   // background: #ffc; /* Цвет фона */
+    padding: 10px; /* Поля вокруг текста */
+    //opacity: 0.8;
+}
+
+.T1Font{
+    color: white;
+}

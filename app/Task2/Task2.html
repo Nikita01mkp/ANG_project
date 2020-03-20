@@ -1,0 +1,40 @@
+<div class="container-fluid col-10 col-sm-5 col-md-4 col-lg-3">
+
+            <center><img src="Task2/logo.png" alt="альтернативный текст" width="100" height="100"></center>
+            <div style="padding: 10px;" class="needs-validation" novalidate>
+                <div class="form-group">
+                    <div class="feedback" style="color: white">
+                        Login
+                    </div>
+                    <input type="text" class="form-control form-control-lg" ng-class="hasErrLog" ng-model="login"
+                           ng-change="validBack('1')">
+                    <div class="invalid-feedback ">
+                        {{fieldLog}}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="feedback" style="color: white">
+                        Password
+                    </div>
+                    <input type="password" class="form-control form-control-lg" ng-class="hasErrPass"
+                           ng-model="password"
+                           ng-change="validBack('2')">
+                    <div class="invalid-feedback">
+                        {{fieldPass}}
+                    </div>
+                </div>
+                <div class="form-check">
+                    <input type="checkbox" class="squaredOne">
+                    <label class="csome">Remember me</label>
+                </div>
+                <button ng-click="comeIn()" class="btn btn-info btn-block btn-lg" style="border-radius: 25px">Log In
+                </button>
+                </br>
+                <div>
+                    <p style="color: white">Don't have a page? <a href="#!/Task1" class="T2link">Sing Up</a></p>
+                </div>
+            </div>
+
+
+</div>

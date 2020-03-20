@@ -1,0 +1,61 @@
+<div class="container-fluid col-3">
+<!--    <div class="parent1">-->
+<!--        <div class="block1">-->
+            <div class="needs-validation" novalidate>
+                <h1 style="font-size: 50pt; color: white">My account</h1>
+                <div>
+                    <div class="feedback">
+                        Name:
+                    </div>
+                    <input class="form-control" ng-model="name" placeholder="Inter your name" ng-class="hasErrName"
+                           ng-change="validBack('1')">
+                    <button class="btn btn-success" ng-click="changeName()">Change</button>
+
+                </div>
+
+                <div>
+                    <div class="feedback">
+                        Age:
+                    </div>
+                    <input class="form-control" ng-model="age" placeholder="Inter your age" ng-class="hasErrAge"
+                           ng-change="validBack('2')">
+                    <button class="btn btn-success" ng-click="changeAge()">Change</button>
+                </div>
+
+                <div>
+                    <div class="feedback">
+                        Gender:
+                    </div>
+                    <input class="form-control" ng-model="gender" placeholder="Inter your gender"
+                           ng-change="validBack('3')" ng-class="hasErrGender">
+                    <button class="btn btn-success" ng-click="changeGender()">Change</button>
+                </div>
+
+                <div>
+                    <div class="feedback">
+                        Old password:
+                    </div>
+                    <input class="form-control" ng-model="oldPassword" placeholder="Inter your old password"
+                           type="password" ng-class="hasErrOldPass" ng-change="validBack('4')">
+                </div>
+
+                <div>
+                    <div class="feedback">
+                        New password:
+                    </div>
+                    <input class="form-control" ng-model="newPassword" placeholder="Inter new password" type="password"
+                           ng-class="hasErrNewPass" ng-change="validBack('5')">
+                </div>
+
+                <div>
+                    <div class="feedback">
+                        Repeat new password:
+                    </div>
+                    <input class="form-control" ng-model="reNewPassword" placeholder="Repeat new password"
+                           type="password" ng-class="hasErrNewPass" ng-change="validBack('5')">
+                    <button class="btn btn-success" ng-click="changePass()">Change</button>
+                </div>
+            </div>
+<!--        </div>-->
+<!--    </div>-->
+</div>
