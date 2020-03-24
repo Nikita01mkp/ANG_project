@@ -13,9 +13,11 @@ angular.module('myApp.Task3', ['ngRoute'])
 
     $scope.myPoint = $rootScope.currentUserPoint;
     let currentUser = JSON.parse(localStorage.getItem($scope.myPoint));
+
     $scope.name = currentUser.userName;
     $scope.age = currentUser.userOld;
     $scope.gender = currentUser.userGender;
+
     $scope.oldPassword = '';
     $scope.newPassword = '';
     $scope.reNewPassword = '';
@@ -24,6 +26,7 @@ angular.module('myApp.Task3', ['ngRoute'])
     $scope.hasErrGender = '';
     $scope.hasErrOldPass = '';
     $scope.hasErrNewPass = '';
+    // $rootScope.fonOfbody = 'Task3/mood.jpg';
 
     $scope.hashCode = function (s) {
         return s.split("").reduce(function (a, b) {
@@ -46,7 +49,11 @@ angular.module('myApp.Task3', ['ngRoute'])
     $scope.changeAge = function () {
         if ($scope.age != '') {
             currentUser.userOld = $scope.age;
-            let obj = JSON.stringify(currentUser);
+            try{
+                let obj = JSON.stringify(currentUser);
+            }catch(e){
+                console.log('')
+            }
             localStorage.setItem($scope.myPoint, obj);
         } else {
             $scope.hasErrAge = 'is-invalid';

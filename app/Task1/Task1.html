@@ -46,7 +46,7 @@
 
             <div class="form-group">
                 <label>How odl is you</label>
-                <input type="text" class="form-control" ng-model="old">
+                <input type="number" class="form-control" ng-model="old">
             </div>
 
             <div class="form-group">
@@ -55,7 +55,7 @@
             </div>
 
         </div>
-        <button class="btn btn-primary" type="submit" ng-click="send()">Submit form</button>
+        <button class="btn btn-primary" type="submit" ng-click="send()" ng-disabled = "subBtn">Submit form</button>
     </center>
 
 

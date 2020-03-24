@@ -22,6 +22,7 @@ angular.module('myApp.Task2', ['ngRoute'])
     $scope.fieldLog = '';
     $scope.fieldPass = '';
     $scope.currenctPoin = localStorage.getItem('Point');
+    // $rootScope.fonOfbody = 'Task3/fon.jpg';
 
     $scope.hashCode = function(s){
         return s.split("").reduce(function(a,b){a=((a<<5)-a)+b.charCodeAt(0);return a&a},0);

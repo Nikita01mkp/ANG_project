@@ -9,7 +9,7 @@ angular.module('myApp.Task1', ['ngRoute'])
         });
     }])
 
-    .controller('CtrlT1', ['$scope', function ($scope) {
+    .controller('CtrlT1', ['$scope', '$http', function ($scope, $http) {
 
         $scope.hasErrLog = '';
         $scope.hasErrPass = '';
@@ -23,6 +23,7 @@ angular.module('myApp.Task1', ['ngRoute'])
         $scope.old = '';
         $scope.name = '';
         $scope.InvFeedbackPass = "";
+        $scope.subBtn = '';
 
         $scope.hashCode = function (s) {
             return s.split("").reduce(function (a, b) {
@@ -35,23 +36,29 @@ angular.module('myApp.Task1', ['ngRoute'])
 
             if (!($scope.login === '') && !($scope.password === '') && !($scope.rePassword === '') && !($scope.mail === '')) {
                 if($scope.password === $scope.rePassword) {
-                    $scope.mas[$scope.myPoint] = {};
-                    $scope.mas[$scope.myPoint].userLogin = $scope.login;
-                    let saltPass = $scope.password + $scope.mail;
-                    $scope.mas[$scope.myPoint].userPassword = $scope.hashCode(saltPass);
-                    $scope.mas[$scope.myPoint].userEmail = $scope.mail;
-                    $scope.mas[$scope.myPoint].userName = $scope.name;
-                    $scope.mas[$scope.myPoint].userOld = $scope.old;
-                    let serialObj = JSON.stringify($scope.mas[$scope.myPoint]);
-                    localStorage.setItem($scope.myPoint, serialObj);
-                    $scope.myPoint++;
-                    localStorage.setItem('Point', $scope.myPoint);
+                    $scope.subBtn = true;
+                    let obj = {};
+                    obj.userLogin = $scope.login;
+                    obj.userPassword = $scope.password;
+                    obj.userEmail = $scope.mail;
+                    obj.userName = $scope.name;
+                    obj.userAge = $scope.old;
+
+
+                    $http.post( 'http://localhost:3000/api/users ', obj  )
+                        .then((resp) => {
+                            console.log("Success")
+                        })
+                        .catch((err)=>{
+                            console.log("Ошибка отправки данных пользователя", err)
+                        })
                     $scope.login = '';
                     $scope.password = '';
                     $scope.rePassword = '';
                     $scope.mail = '';
                     $scope.old = '';
                     $scope.name = '';
+                    $scope.subBtn = false;
 
                 }else {
                     $scope.InvFeedbackPass = 'Passwords do not match';
