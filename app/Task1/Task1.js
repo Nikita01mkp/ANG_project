@@ -47,7 +47,7 @@ angular.module('myApp.Task1', ['ngRoute'])
 
                     $http.post( 'http://localhost:3000/api/users ', obj  )
                         .then((resp) => {
-                            console.log("Success")
+                            console.log("Success");
                         })
                         .catch((err)=>{
                             console.log("Ошибка отправки данных пользователя", err)

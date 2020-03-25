@@ -2,7 +2,7 @@
 
 angular.module('myApp.Task2', ['ngRoute'])
 
-    .config(['$routeProvider', function($routeProvider) {
+    .config(['$routeProvider', function ($routeProvider) {
         $routeProvider.when('/Task2', {
             templateUrl: 'Task2/Task2.html',
             controller: 'CtrlT2'
@@ -10,86 +10,80 @@ angular.module('myApp.Task2', ['ngRoute'])
     }])
 
 
-.controller('CtrlT2', [ '$scope', '$rootScope', function($scope, $rootScope) {
+    .controller('CtrlT2', ['$scope', '$rootScope', '$http', function ($scope, $rootScope, $http) {
 
-    $scope.hasErrLog = '';
-    $scope.hasErrPass = '';
-    $scope.login = '';
-    $scope.password = '';
-    $scope.mail = '';
-    $scope.mas = [];
-    $scope.myPoint = '';
-    $scope.fieldLog = '';
-    $scope.fieldPass = '';
-    $scope.currenctPoin = localStorage.getItem('Point');
-    // $rootScope.fonOfbody = 'Task3/fon.jpg';
+        $scope.hasErrLog = '';
+        $scope.hasErrPass = '';
+        $scope.login = '';
+        $scope.password = '';
+        $scope.mail = '';
+        $scope.mas = [];
+        $scope.myPoint = '';
+        $scope.fieldLog = '';
+        $scope.fieldPass = '';
+        $scope.currenctPoin = localStorage.getItem('Point');
+        // $rootScope.fonOfbody = 'Task3/fon.jpg';
 
-    $scope.hashCode = function(s){
-        return s.split("").reduce(function(a,b){a=((a<<5)-a)+b.charCodeAt(0);return a&a},0);
-    }
 
-    $scope.validBack = function (i) {
+        $scope.validBack = function (i) {
 
-        switch (i) {
-            case '1':
-                $scope.hasErrLog = '';
-                break;
-            case '2':
-                $scope.hasErrPass = '';
-                break;
-            case '3':
-                $scope.hasErrMail = '';
+            switch (i) {
+                case '1':
+                    $scope.hasErrLog = '';
+                    break;
+                case '2':
+                    $scope.hasErrPass = '';
+                    break;
+                case '3':
+                    $scope.hasErrMail = '';
+            }
+
         }
 
-    }
-
-    $scope.comeIn = function () {
+        $scope.comeIn = function () {
 
 
-        if(!($scope.login === '') && !($scope.password === '')){
-            let i = 0;
-            for(i = 0; i < ($scope.currenctPoin); i++){
-                $scope.mas[i] = JSON.parse(localStorage.getItem(i));
-                if($scope.login === $scope.mas[i].userLogin){
-                    $scope.comparePass(i);
-                    break;
+            if (!($scope.login === '') && !($scope.password === '')) {
+
+                let obj = {};
+                let tumb = false;
+                obj.userLogin = $scope.login;
+                obj.userPassword = $scope.password;
+
+                $http.put('http://localhost:3000/api/users', obj)
+                    .then((resp) => {
+                        alert("Success");
+                        console.log("Task2.js - It's work");
+                    })
+                    .catch((err) => {
+                        console.log("Task2.js - It's not work");
+                        if (err.status === 400) {
+                            $scope.hasErrLog = 'is-invalid';
+                            $scope.fieldLog = err.data;
+                            $scope.password = '';
+                        }
+                        if (err.status === 401) {
+                            $scope.hasErrPass = 'is-invalid';
+                            $scope.fieldPass = err.data;
+                            $scope.password = '';
+                        }
+
+                    })
+
+
+            } else {
+
+                if ($scope.login === '') {
+                    $scope.hasErrLog = 'is-invalid';
+                    $scope.fieldLog = 'Obligatory field'
+                }
+                if (($scope.password === '') || !($scope.password === $scope.rePassword)) {
+                    $scope.hasErrPass = 'is-invalid';
+                    $scope.fieldPass = 'Obligatory field'
                 }
             }
-            if(i == ($scope.currenctPoin)){
-                $scope.hasErrLog = 'is-invalid';
-                $scope.fieldLog = 'Wrong Login or user does not exist';
-                $scope.password = ''
-            }
-
-        }else {
-
-            if ($scope.login === '') {
-                $scope.hasErrLog = 'is-invalid';
-                $scope.fieldLog = 'Obligatory field'
-            }
-            if (($scope.password === '') || !($scope.password === $scope.rePassword)) {
-                $scope.hasErrPass = 'is-invalid';
-                $scope.fieldPass = 'Obligatory field'
-            }
-        }
-    }
-
-    $scope.comparePass = function (key) {
-
-
-        let myObj = JSON.parse(localStorage.getItem(key));
-        let saltPass = $scope.password + myObj.userEmail;
-        let hashPass = $scope.hashCode(saltPass);
-        if (hashPass === myObj.userPassword){
-            alert("Welcome!");// реализовать переход по ссылке вместо приветствия
-            $rootScope.currentUserPoint = key;
-        } else{
-            $scope.password = '';
-            $scope.fieldPass = 'Wrong password'
-            $scope.hasErrPass = 'is-invalid';
         }
 
-    }
 
 
-}])
+    }])
