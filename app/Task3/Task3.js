@@ -15,7 +15,8 @@ angular.module('myApp.Task3', ['ngRoute'])
         $scope.currentUser = {};
         $http.get('http://localhost:3000/api/users/' + userId)
             .then((resp) => {
-
+                console.log("work");
+                console.log(resp.data);
                 $scope.currentUser = resp.data;
                 $scope.name = $scope.currentUser.name;
                 $scope.age = $scope.currentUser.age;
@@ -107,20 +108,25 @@ angular.module('myApp.Task3', ['ngRoute'])
                         let localObj = {};
                         localObj.newPassword = $scope.newPassword;
                         localObj.oldPassword = $scope.oldPassword;
-                        localObj.id = $scope.currentUser._id;
-                        localObj.salt = $scope.currentUser.userId;
+                        localObj.id = userId;
 
 
                         $http.put("http://localhost:3000/api/user/changePassword", localObj)
                             .then((resp) => {
 
-                                console.log("who is here");
-                                // $scope.currentUser = $scope.newPassword;
+                                console.log("change password log success");
+                                $scope.oldPassword = '';
+                                $scope.newPassword = '';
+                                $scope.reNewPassword = '';
 
                             })
                             .catch((err) => {
 
-                                console.log("Warning this is a mistake")
+                                console.log("Warning this is a mistake");
+                                $scope.oldPassword = '';
+                                $scope.newPassword = '';
+                                $scope.reNewPassword = '';
+                                $scope.hasErrOldPass = 'is-invalid';
 
                             })
 
