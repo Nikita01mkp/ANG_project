@@ -171,24 +171,4 @@ angular.module('myApp.Task3', ['ngRoute'])
         }
 
 
-    }])
-
-
-
-/*alert("Wrong password")
-                $scope.oldPassword = '';
-                $scope.newPassword = '';
-                $scope.reNewPassword = '';
-                $scope.hasErrOldPass = 'is-invalid';
-
-
-
-
-alert("Success");
-                        $scope.oldPassword = '';
-                        $scope.newPassword = '';
-                        $scope.reNewPassword = '';
-
-остатки для вставки в валидацию для password
-
-*/
+    }]);
