@@ -11,7 +11,7 @@ angular.module('myApp.Task3', ['ngRoute'])
 
     .controller('CtrlT3', ['$scope', '$rootScope', '$http', function ($scope, $rootScope, $http) {
 
-        let userId = '5e7b12bd3d41ce34e3757303';
+        let userId = '5e8b32db58e864334c050071';
         $scope.currentUser = {};
         $http.get('http://localhost:3000/api/users/' + userId)
             .then((resp) => {
@@ -21,10 +21,11 @@ angular.module('myApp.Task3', ['ngRoute'])
                 $scope.name = $scope.currentUser.name;
                 $scope.age = $scope.currentUser.age;
                 $scope.gender = $scope.currentUser.gender;
+                $scope.currentUser._id = userId;
             })
             .catch((err) => {
                 console.log(err);
-                console.log("ALAAARM ALAARM we all are died")
+                console.log("ALAAARM ALAARM we all are died");
             });
 
 
@@ -42,7 +43,7 @@ angular.module('myApp.Task3', ['ngRoute'])
         $scope.changeName = function () {
             if ($scope.name != '') {
                 $scope.currentUser.name = $scope.name;
-                $http.put("http://localhost:3000/api/user/change", $scope.currentUser)
+                $http.put("http://localhost:3000/api/users/change", $scope.currentUser)
                     .then((resp) => {
 
                         console.log("who is here");
@@ -50,7 +51,7 @@ angular.module('myApp.Task3', ['ngRoute'])
                     })
                     .catch((err) => {
 
-                        console.log("Warning this is a mistake")
+                        console.log("Warning this is a mistake");
 
                 })
 
@@ -62,7 +63,7 @@ angular.module('myApp.Task3', ['ngRoute'])
         $scope.changeAge = function () {
             if ($scope.age != '') {
                 $scope.currentUser.age = $scope.age;
-                $http.put("http://localhost:3000/api/user/change", $scope.currentUser)
+                $http.put("http://localhost:3000/api/users/change", $scope.currentUser)
                     .then((resp) => {
 
                         console.log("who is here");
@@ -83,7 +84,7 @@ angular.module('myApp.Task3', ['ngRoute'])
             if ($scope.gender != '') {
 
                 $scope.currentUser.gender = $scope.gender;
-                $http.put("http://localhost:3000/api/user/change", $scope.currentUser)
+                $http.put("http://localhost:3000/api/users/change", $scope.currentUser)
                     .then((resp) => {
 
                         console.log("who is here");
@@ -111,7 +112,7 @@ angular.module('myApp.Task3', ['ngRoute'])
                         localObj.id = userId;
 
 
-                        $http.put("http://localhost:3000/api/user/changePassword", localObj)
+                        $http.put("http://localhost:3000/api/users/changePassword", localObj)
                             .then((resp) => {
 
                                 console.log("change password log success");
