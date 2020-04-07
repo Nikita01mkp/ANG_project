@@ -11,7 +11,7 @@ angular.module('myApp.Task3', ['ngRoute'])
 
     .controller('CtrlT3', ['$scope', '$rootScope', '$http', function ($scope, $rootScope, $http) {
 
-        let userId = '5e8b32db58e864334c050071';
+        let userId = '5e8c7b996ce2a0372cd8b8cb';
         $scope.currentUser = {};
         $http.get('http://localhost:3000/api/users/' + userId)
             .then((resp) => {
@@ -47,6 +47,8 @@ angular.module('myApp.Task3', ['ngRoute'])
                     .then((resp) => {
 
                         console.log("who is here");
+                        $scope.gender = $scope.currentUser.gender;
+                        $scope.age = $scope.currentUser.age;
 
                     })
                     .catch((err) => {
@@ -67,6 +69,8 @@ angular.module('myApp.Task3', ['ngRoute'])
                     .then((resp) => {
 
                         console.log("who is here");
+                        $scope.name = $scope.currentUser.name;
+                        $scope.gender = $scope.currentUser.gender;
 
                     })
                     .catch((err) => {
@@ -88,6 +92,8 @@ angular.module('myApp.Task3', ['ngRoute'])
                     .then((resp) => {
 
                         console.log("who is here");
+                        $scope.name = $scope.currentUser.name;
+                        $scope.age = $scope.currentUser.age;
 
                     })
                     .catch((err) => {
@@ -129,7 +135,7 @@ angular.module('myApp.Task3', ['ngRoute'])
                                 $scope.reNewPassword = '';
                                 $scope.hasErrOldPass = 'is-invalid';
 
-                            })
+                            });
 
 
 
@@ -150,6 +156,27 @@ angular.module('myApp.Task3', ['ngRoute'])
 
         }
 
+        $scope.userDelete = function(){
+            let request = confirm("Are you sure?");
+            if(request){
+                console.log("User is dead");
+                $http.delete("http://localhost:3000/api/users/" + userId)
+                    .then((resp) => {
+
+                        console.log('delete user - success');
+
+                    })
+                    .catch((err) => {
+
+                        console.log('delete user - something wrong');
+
+                    });
+
+            }else{
+                alert("This is right mind");
+            }
+        }
+
         $scope.validBack = function (i) {
 
             switch (i) {
@@ -168,7 +195,7 @@ angular.module('myApp.Task3', ['ngRoute'])
                     $scope.hasErrNewPass = '';
             }
 
-        }
+        };
 
 
     }]);

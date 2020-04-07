@@ -1,6 +1,4 @@
 <div class="container-fluid col-3">
-<!--    <div class="parent1">-->
-<!--        <div class="block1">-->
             <div class="needs-validation" novalidate>
                 <h1 style="font-size: 50pt; color: white">My account</h1>
                 <div>
@@ -55,7 +53,8 @@
                            type="password" ng-class="hasErrNewPass" ng-change="validBack('5')">
                     <button class="btn btn-success" ng-click="changePass()">Change</button>
                 </div>
+                <div style="padding: 10pt">
+                    <button type="button" class="btn btn-danger btn-block" ng-click="userDelete()">Delete</button>
+                </div>
             </div>
-<!--        </div>-->
-<!--    </div>-->
 </div>
