@@ -1,5 +1,4 @@
 'use strict';
-
 angular.module('myApp.Task2', ['ngRoute'])
 
     .config(['$routeProvider', function ($routeProvider) {
@@ -12,6 +11,8 @@ angular.module('myApp.Task2', ['ngRoute'])
 
     .controller('CtrlT2', ['$scope', '$rootScope', '$http', function ($scope, $rootScope, $http) {
 
+
+
         $scope.hasErrLog = '';
         $scope.hasErrPass = '';
         $scope.login = '';
@@ -21,7 +22,7 @@ angular.module('myApp.Task2', ['ngRoute'])
         $scope.myPoint = '';
         $scope.fieldLog = '';
         $scope.fieldPass = '';
-        $scope.currenctPoin = localStorage.getItem('Point');
+        // $scope.currenctPoin = localStorage.getItem('Point');
         // $rootScope.fonOfbody = 'Task3/fon.jpg';
 
 
@@ -46,7 +47,6 @@ angular.module('myApp.Task2', ['ngRoute'])
             if (!($scope.login === '') && !($scope.password === '')) {
 
                 let obj = {};
-                let tumb = false;
                 obj.userLogin = $scope.login;
                 obj.userPassword = $scope.password;
 
@@ -54,6 +54,9 @@ angular.module('myApp.Task2', ['ngRoute'])
                     .then((resp) => {
                         alert("Success");
                         console.log("Task2.js - It's work");
+                        console.log(resp.data);
+                        localStorage.setItem("userToken", resp.data.token);
+                        localStorage.setItem("userRefreshToken", resp.data.refreshToken);
                     })
                     .catch((err) => {
                         console.log("Task2.js - It's not work");
@@ -68,7 +71,7 @@ angular.module('myApp.Task2', ['ngRoute'])
                             $scope.password = '';
                         }
 
-                    })
+                    });
 
 
             } else {

@@ -11,22 +11,56 @@ angular.module('myApp.Task3', ['ngRoute'])
 
     .controller('CtrlT3', ['$scope', '$rootScope', '$http', function ($scope, $rootScope, $http) {
 
-        let userId = '5e8c7b996ce2a0372cd8b8cb';
-        $scope.currentUser = {};
-        $http.get('http://localhost:3000/api/users/' + userId)
-            .then((resp) => {
-                console.log("work");
-                console.log(resp.data);
-                $scope.currentUser = resp.data;
-                $scope.name = $scope.currentUser.name;
-                $scope.age = $scope.currentUser.age;
-                $scope.gender = $scope.currentUser.gender;
-                $scope.currentUser._id = userId;
-            })
-            .catch((err) => {
-                console.log(err);
-                console.log("ALAAARM ALAARM we all are died");
-            });
+        // let token = localStorage.getItem('userToken');
+        // $scope.currentUser = {};
+        // let someObj = {};
+        // someObj.token = token;
+        // console.log(someObj);
+
+        function getUser() {
+            let token = localStorage.getItem('userToken');
+
+            $http.get('http://localhost:3000/api/users/' + token)
+                .then((resp) => {
+                    console.log("work");
+                    console.log(resp.data);
+                    $scope.currentUser = resp.data;
+                    $scope.name = $scope.currentUser.name;
+                    $scope.age = $scope.currentUser.age;
+                    $scope.gender = $scope.currentUser.gender;
+                    // $scope.currentUser._id = userId;
+                })
+                .catch((err) => {
+                    if (err.status === 401) {
+                        refreshToken(getUser);
+                    }
+                    console.log("token is dead");
+                });
+        }
+
+        function refreshToken(request){
+
+            let obj = {token: localStorage.getItem('userToken'), refreshToken: localStorage.getItem('userRefreshToken')};
+            $http.post('http://localhost:3000/api/users/token/refresh', obj)
+                .then((resp) =>{
+
+                    localStorage.setItem("userToken", resp.data.token);
+                    localStorage.setItem("userRefreshToken", resp.data.refreshToken);
+
+                    console.log("userToken", resp.data.token);
+                    console.log("userRefreshToken", resp.data.refreshToken);
+
+                    request();
+
+                })
+                .catch((err) => {
+                    console.log("Error");
+                });
+
+        }
+
+        getUser();
+
 
 
         $scope.oldPassword = '';
@@ -41,9 +75,9 @@ angular.module('myApp.Task3', ['ngRoute'])
 
 
         $scope.changeName = function () {
-            if ($scope.name != '') {
+            if ($scope.name !== '') {
                 $scope.currentUser.name = $scope.name;
-                $http.put("http://localhost:3000/api/users/change", $scope.currentUser)
+                $http.put("http://localhost:3000/api/users/change/" + token, $scope.currentUser)
                     .then((resp) => {
 
                         console.log("who is here");
@@ -53,9 +87,11 @@ angular.module('myApp.Task3', ['ngRoute'])
                     })
                     .catch((err) => {
 
+                        console.log(err);
+
                         console.log("Warning this is a mistake");
 
-                })
+                    })
 
             } else {
                 $scope.hasErrName = 'is-invalid';
@@ -65,7 +101,7 @@ angular.module('myApp.Task3', ['ngRoute'])
         $scope.changeAge = function () {
             if ($scope.age != '') {
                 $scope.currentUser.age = $scope.age;
-                $http.put("http://localhost:3000/api/users/change", $scope.currentUser)
+                $http.put("http://localhost:3000/api/users/change/" + token, $scope.currentUser)
                     .then((resp) => {
 
                         console.log("who is here");
@@ -88,7 +124,7 @@ angular.module('myApp.Task3', ['ngRoute'])
             if ($scope.gender != '') {
 
                 $scope.currentUser.gender = $scope.gender;
-                $http.put("http://localhost:3000/api/users/change", $scope.currentUser)
+                $http.put("http://localhost:3000/api/users/change/" + token, $scope.currentUser)
                     .then((resp) => {
 
                         console.log("who is here");
@@ -98,9 +134,9 @@ angular.module('myApp.Task3', ['ngRoute'])
                     })
                     .catch((err) => {
 
-                        console.log("Warning this is a mistake")
+                        console.log("Warning this is a mistake");
 
-                    })
+                    });
 
             } else {
                 $scope.hasErrGender = 'is-invalid';
@@ -109,58 +145,52 @@ angular.module('myApp.Task3', ['ngRoute'])
 
         $scope.changePass = function () {
 
-                if ($scope.newPassword === $scope.reNewPassword) {
-                    if ($scope.newPassword != '') {
+            if ($scope.newPassword === $scope.reNewPassword) {
+                if ($scope.newPassword != '') {
 
-                        let localObj = {};
-                        localObj.newPassword = $scope.newPassword;
-                        localObj.oldPassword = $scope.oldPassword;
-                        localObj.id = userId;
+                    let localObj = {};
+                    localObj.newPassword = $scope.newPassword;
+                    localObj.oldPassword = $scope.oldPassword;
 
+                    $http.put("http://localhost:3000/api/users/changePassword/" + token, localObj)
+                        .then((resp) => {
 
-                        $http.put("http://localhost:3000/api/users/changePassword", localObj)
-                            .then((resp) => {
+                            console.log("change password log success");
+                            $scope.oldPassword = '';
+                            $scope.newPassword = '';
+                            $scope.reNewPassword = '';
 
-                                console.log("change password log success");
-                                $scope.oldPassword = '';
-                                $scope.newPassword = '';
-                                $scope.reNewPassword = '';
+                        })
+                        .catch((err) => {
 
-                            })
-                            .catch((err) => {
+                            console.log("Warning this is a mistake");
+                            $scope.oldPassword = '';
+                            $scope.newPassword = '';
+                            $scope.reNewPassword = '';
+                            $scope.hasErrOldPass = 'is-invalid';
 
-                                console.log("Warning this is a mistake");
-                                $scope.oldPassword = '';
-                                $scope.newPassword = '';
-                                $scope.reNewPassword = '';
-                                $scope.hasErrOldPass = 'is-invalid';
-
-                            });
+                        });
 
 
-
-                    } else {
-                        $scope.hasErrNewPass = 'is-invalid';
-                        alert('Enter a new password')
-                    }
                 } else {
-                    alert("Passwords do not match")
-                    $scope.newPassword = '';
-                    $scope.reNewPassword = '';
                     $scope.hasErrNewPass = 'is-invalid';
+                    alert('Enter a new password')
                 }
-
-
-
+            } else {
+                alert("Passwords do not match")
+                $scope.newPassword = '';
+                $scope.reNewPassword = '';
+                $scope.hasErrNewPass = 'is-invalid';
+            }
 
 
         }
 
-        $scope.userDelete = function(){
+        $scope.userDelete = function () {
             let request = confirm("Are you sure?");
-            if(request){
+            if (request) {
                 console.log("User is dead");
-                $http.delete("http://localhost:3000/api/users/" + userId)
+                $http.delete("http://localhost:3000/api/users/" + token)
                     .then((resp) => {
 
                         console.log('delete user - success');
@@ -172,7 +202,7 @@ angular.module('myApp.Task3', ['ngRoute'])
 
                     });
 
-            }else{
+            } else {
                 alert("This is right mind");
             }
         }
