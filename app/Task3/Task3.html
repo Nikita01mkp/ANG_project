@@ -35,6 +35,9 @@
                     </div>
                     <input class="form-control" ng-model="oldPassword" placeholder="Inter your old password"
                            type="password" ng-class="hasErrOldPass" ng-change="validBack('4')">
+                    <div class="invalid-feedback">
+                        {{fieldPass}}
+                    </div>
                 </div>
 
                 <div>
@@ -43,6 +46,9 @@
                     </div>
                     <input class="form-control" ng-model="newPassword" placeholder="Inter new password" type="password"
                            ng-class="hasErrNewPass" ng-change="validBack('5')">
+                    <div class="invalid-feedback">
+                        {{fieldNewPass}}
+                    </div>
                 </div>
 
                 <div>
@@ -51,6 +57,9 @@
                     </div>
                     <input class="form-control" ng-model="reNewPassword" placeholder="Repeat new password"
                            type="password" ng-class="hasErrNewPass" ng-change="validBack('5')">
+                    <div class="invalid-feedback">
+                        {{fieldNewPass}}
+                    </div>
                     <button class="btn btn-success" ng-click="changePass()">Change</button>
                 </div>
                 <div style="padding: 10pt">

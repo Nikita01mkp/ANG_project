@@ -22,7 +22,6 @@ angular.module('myApp.Task2', ['ngRoute'])
         $scope.myPoint = '';
         $scope.fieldLog = '';
         $scope.fieldPass = '';
-        // $scope.currenctPoin = localStorage.getItem('Point');
         // $rootScope.fonOfbody = 'Task3/fon.jpg';
 
 
@@ -49,17 +48,15 @@ angular.module('myApp.Task2', ['ngRoute'])
                 let obj = {};
                 obj.userLogin = $scope.login;
                 obj.userPassword = $scope.password;
+                obj.token = localStorage.getItem('userToken');
 
                 $http.put('http://localhost:3000/api/users', obj)
                     .then((resp) => {
                         alert("Success");
-                        console.log("Task2.js - It's work");
-                        console.log(resp.data);
                         localStorage.setItem("userToken", resp.data.token);
                         localStorage.setItem("userRefreshToken", resp.data.refreshToken);
                     })
                     .catch((err) => {
-                        console.log("Task2.js - It's not work");
                         if (err.status === 400) {
                             $scope.hasErrLog = 'is-invalid';
                             $scope.fieldLog = err.data;
