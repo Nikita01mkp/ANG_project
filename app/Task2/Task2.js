@@ -55,6 +55,9 @@ angular.module('myApp.Task2', ['ngRoute'])
                         alert("Success");
                         localStorage.setItem("userToken", resp.data.token);
                         localStorage.setItem("userRefreshToken", resp.data.refreshToken);
+                        $scope.login = '';
+                        $scope.password = '';
+                        window.location.href = '#!/Task3';
                     })
                     .catch((err) => {
                         if (err.status === 400) {

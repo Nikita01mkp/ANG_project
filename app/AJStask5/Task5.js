@@ -495,7 +495,7 @@ angular.module('myApp.Task5', ['ngRoute'])
 
     $scope.Save = function () {
 
-        if (($scope.inputts5 != '') && ($scope.inputts5.replace(/\s+/g, '') != 0)) {
+        if (($scope.inputts5 !== '') && ($scope.inputts5.replace(/\s+/g, '') !== 0)) {
             $scope.mas[$scope.selectedIndex] = $scope.inputts5;
         } else {
             $scope.hasErrTS5 = 'has-errorts5';
@@ -507,7 +507,7 @@ angular.module('myApp.Task5', ['ngRoute'])
 
     $scope.saveRoomName = function () {
 
-        if (($scope.roomNm != '') && ($scope.roomNm.replace(/\s+/g, '') != 0)) {
+        if (($scope.roomNm !== '') && ($scope.roomNm.replace(/\s+/g, '') !== 0)) {
             $scope.masOfRooms[$scope.selectedRoomIndex] = $scope.roomNm;
             $scope.home[$scope.selectedIndex].rooms[$scope.selectedRoomIndex].roomName = $scope.roomNm;
         } else {

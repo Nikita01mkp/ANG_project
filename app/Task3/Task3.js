@@ -27,6 +27,10 @@ angular.module('myApp.Task3', ['ngRoute'])
                     if (err.status === 401) {
                         refreshToken(getUser);
                     }
+
+                    if(err.status === 403){
+                        window.location.href = '#!/Task2';
+                    }
                 });
         }
 
@@ -200,7 +204,9 @@ angular.module('myApp.Task3', ['ngRoute'])
             if (request) {
                 $http.delete("http://localhost:3000/api/users/" + $scope.token)
                     .then((resp) => {
-
+                        localStorage.removeItem("userToken");
+                        localStorage.removeItem("userRefreshToken");
+                        window.location.href = '#!/Task2';
                     })
                     .catch((err) => {
 
