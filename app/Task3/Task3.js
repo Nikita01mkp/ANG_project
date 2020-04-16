@@ -12,7 +12,6 @@ angular.module('myApp.Task3', ['ngRoute'])
     .controller('CtrlT3', ['$scope', '$rootScope', '$http', function ($scope, $rootScope, $http) {
 
 
-
         function getUser() {
             $scope.token = localStorage.getItem('userToken');
 
@@ -28,17 +27,20 @@ angular.module('myApp.Task3', ['ngRoute'])
                         refreshToken(getUser);
                     }
 
-                    if(err.status === 403){
+                    if (err.status === 403) {
                         window.location.href = '#!/Task2';
                     }
                 });
         }
 
-        function refreshToken(request){
+        function refreshToken(request) {
 
-            let obj = {token: localStorage.getItem('userToken'), refreshToken: localStorage.getItem('userRefreshToken')};
+            let obj = {
+                token: localStorage.getItem('userToken'),
+                refreshToken: localStorage.getItem('userRefreshToken')
+            };
             $http.post('http://localhost:3000/api/users/token/refresh', obj)
-                .then((resp) =>{
+                .then((resp) => {
 
                     localStorage.setItem("userToken", resp.data.token);
                     localStorage.setItem("userRefreshToken", resp.data.refreshToken);
@@ -55,7 +57,6 @@ angular.module('myApp.Task3', ['ngRoute'])
         }
 
         getUser();
-
 
 
         $scope.oldPassword = '';
@@ -83,7 +84,7 @@ angular.module('myApp.Task3', ['ngRoute'])
                     })
                     .catch((err) => {
 
-                        if(err.status === 401){
+                        if (err.status === 401) {
                             return refreshToken($scope.changeName);
                         }
 
@@ -109,10 +110,9 @@ angular.module('myApp.Task3', ['ngRoute'])
 
                     })
                     .catch((err) => {
-                        if(err.status === 401){
+                        if (err.status === 401) {
                             return refreshToken($scope.changeAge);
                         }
-
 
 
                     })
@@ -136,10 +136,9 @@ angular.module('myApp.Task3', ['ngRoute'])
                     })
                     .catch((err) => {
 
-                        if(err.status === 401){
+                        if (err.status === 401) {
                             return refreshToken($scope.changeGender);
                         }
-
 
 
                     });
@@ -168,11 +167,11 @@ angular.module('myApp.Task3', ['ngRoute'])
                         })
                         .catch((err) => {
 
-                            if(err.status === 401){
+                            if (err.status === 401) {
                                 return refreshToken($scope.changePass);
                             }
 
-                            if(err.status === 403){
+                            if (err.status === 403) {
                                 $scope.fieldPass = err.data;
                             }
 
@@ -210,7 +209,7 @@ angular.module('myApp.Task3', ['ngRoute'])
                     })
                     .catch((err) => {
 
-                        if(err.status === 401){
+                        if (err.status === 401) {
                             refreshToken($scope.userDelete);
                         }
 
@@ -219,7 +218,23 @@ angular.module('myApp.Task3', ['ngRoute'])
             } else {
                 alert("This is right mind");
             }
-        }
+        };
+
+        $scope.userLogout = function () {
+
+            let obj = {token: localStorage.getItem('userToken'), refreshToken: localStorage.getItem('userRefreshToken')};
+            $http.post('http://localhost:3000/api/users/token/delete', obj)
+                .then((resp) => {
+                    localStorage.removeItem("userToken");
+                    localStorage.removeItem("userRefreshToken");
+                    window.location.href = '#!/Task2';
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+
+
+        };
 
         $scope.validBack = function (i) {
 
