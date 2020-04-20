@@ -30,6 +30,7 @@ angular.module('myApp.Task3', ['ngRoute'])
                     if (err.status === 403) {
                         window.location.href = '#!/Task2';
                     }
+                    console.log($scope.token);
                 });
         }
 
@@ -96,10 +97,10 @@ angular.module('myApp.Task3', ['ngRoute'])
             } else {
                 $scope.hasErrName = 'is-invalid';
             }
-        }
+        };
 
         $scope.changeAge = function () {
-            if ($scope.age != '') {
+            if ($scope.age !== '') {
                 $scope.currentUser.age = $scope.age;
                 $http.put("http://localhost:3000/api/users/change/" + $scope.token, $scope.currentUser)
                     .then((resp) => {
@@ -115,7 +116,7 @@ angular.module('myApp.Task3', ['ngRoute'])
                         }
 
 
-                    })
+                    });
 
             } else {
                 $scope.hasErrAge = 'is-invalid';
@@ -123,7 +124,7 @@ angular.module('myApp.Task3', ['ngRoute'])
         }
 
         $scope.changeGender = function () {
-            if ($scope.gender != '') {
+            if ($scope.gender !== '') {
 
                 $scope.currentUser.gender = $scope.gender;
                 $http.put("http://localhost:3000/api/users/change/" + $scope.token, $scope.currentUser)
@@ -222,7 +223,10 @@ angular.module('myApp.Task3', ['ngRoute'])
 
         $scope.userLogout = function () {
 
-            let obj = {token: localStorage.getItem('userToken'), refreshToken: localStorage.getItem('userRefreshToken')};
+            let obj = {
+                token: localStorage.getItem('userToken'),
+                refreshToken: localStorage.getItem('userRefreshToken')
+            };
             $http.post('http://localhost:3000/api/users/token/delete', obj)
                 .then((resp) => {
                     localStorage.removeItem("userToken");

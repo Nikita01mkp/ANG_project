@@ -52,7 +52,6 @@ angular.module('myApp.Task2', ['ngRoute'])
 
                 $http.put('http://localhost:3000/api/users', obj)
                     .then((resp) => {
-                        alert("Success");
                         localStorage.setItem("userToken", resp.data.token);
                         localStorage.setItem("userRefreshToken", resp.data.refreshToken);
                         $scope.login = '';
@@ -78,7 +77,7 @@ angular.module('myApp.Task2', ['ngRoute'])
 
                 if ($scope.login === '') {
                     $scope.hasErrLog = 'is-invalid';
-                    $scope.fieldLog = 'Obligatory field'
+                    $scope.fieldLog = 'Obligatory field';
                 }
                 if (($scope.password === '') || !($scope.password === $scope.rePassword)) {
                     $scope.hasErrPass = 'is-invalid';
