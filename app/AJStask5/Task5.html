@@ -17,7 +17,10 @@
             <input class="form-control form-control-lg" placeholder="Inter the home name" ng-model="inputts5"
                    ng-change="bkCol()" ng-class="hasErrTS5">
             <div class="input-group-append">
-                <button class="input-group-text" ng-click="Save()" ng-model="baton" ng-class="hasErrBtn">Save</button>
+                <button class="input-group-text" ng-click="Save()" ng-model="baton" ng-class="hasErrBtn">Rename</button>
+            </div>
+            <div class="input-group-append">
+                <button class="input-group-text" ng-click="addHome()" ng-model="baton" ng-class="hasErrBtn">Add</button>
             </div>
         </div>
     </div>
@@ -41,10 +44,14 @@
                    ng-change="backColRoom()" ng-class="hasErrRoom">
             <div class="input-group-append">
                 <button class="input-group-text" ng-click="saveRoomName()" ng-model="roomChng"
-                        ng-class="hasErrRoom">Save</button>
+                        ng-class="hasErrRoom">Rename</button>
             </div>
+<!--            <div class="input-group-append">-->
+<!--                <button class="input-group-text" ng-click="" ng-model="" ng-class="hasErrRoom">Add</button>-->
+<!--            </div>-->
         </div>
     </div>
+
 
 
 </div>

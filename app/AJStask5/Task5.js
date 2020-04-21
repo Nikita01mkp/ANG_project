@@ -561,16 +561,33 @@ angular.module('myApp.Task5', ['ngRoute'])
 
             }
 
-        }
+        };
 
 
         $scope.bkCol = function () {
             $scope.hasErrTS5 = '';
             $scope.hasErrBtn = '';
-        }
+        };
 
         $scope.backColRoom = function () {
             $scope.hasErrRoom = '';
-        }
+        };
+
+        $scope.addHome = function() {
+
+            let obj = {};
+            obj.homeName = $scope.inputts5;
+            $http.post('http://localhost:3000/api/homes/addHome/' + localStorage.getItem('userToken'), obj)
+                .then((resp) => {
+                    console.log("SUCCESS");
+                    alert("IT IS WORK MOTHER FUCKER");
+                })
+                .catch((err) => {
+                    if(err.status === 403){
+                        refreshToken($scope.addHome);
+                    }
+                });
+
+        };
 
     }])
