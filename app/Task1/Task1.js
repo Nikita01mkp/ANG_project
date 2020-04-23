@@ -469,17 +469,14 @@ angular.module('myApp.Task1', ['ngRoute'])
                     obj.userEmail = $scope.mail;
                     obj.userName = $scope.name;
                     obj.userAge = $scope.old;
-                    // obj.userHomes = $scope.home;
-                    // console.log(obj);
 
 
                     $http.post('http://localhost:3000/api/users ', obj)
                         .then((resp) => {
-                            console.log("Success");
                             window.location.href = '#!/Task2';
                         })
                         .catch((err) => {
-                            console.log("Ошибка отправки данных пользователя", err);
+                            console.log("Ошибка отправки данных пользователя", err.data);
                         });
                     $scope.login = '';
                     $scope.password = '';

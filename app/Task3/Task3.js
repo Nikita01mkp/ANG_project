@@ -30,7 +30,6 @@ angular.module('myApp.Task3', ['ngRoute'])
                     if (err.status === 403) {
                         window.location.href = '#!/Task2';
                     }
-                    console.log($scope.token);
                 });
         }
 
@@ -52,7 +51,7 @@ angular.module('myApp.Task3', ['ngRoute'])
 
                 })
                 .catch((err) => {
-                    console.log(err);
+                    console.log(err.data);
                 });
 
         }
@@ -70,7 +69,6 @@ angular.module('myApp.Task3', ['ngRoute'])
         $scope.hasErrNewPass = '';
         $scope.fieldPass = '';
         $scope.fieldNewPass = '';
-        // $rootScope.fonOfbody = 'Task3/mood.jpg';
 
 
         $scope.changeName = function () {
@@ -86,10 +84,10 @@ angular.module('myApp.Task3', ['ngRoute'])
                     .catch((err) => {
 
                         if (err.status === 401) {
-                            return refreshToken($scope.changeName);
+                            refreshToken($scope.changeName);
                         }
 
-                        console.log(err);
+                        console.log(err.data);
 
 
                     });
@@ -112,7 +110,7 @@ angular.module('myApp.Task3', ['ngRoute'])
                     })
                     .catch((err) => {
                         if (err.status === 401) {
-                            return refreshToken($scope.changeAge);
+                            refreshToken($scope.changeAge);
                         }
 
 
@@ -121,7 +119,7 @@ angular.module('myApp.Task3', ['ngRoute'])
             } else {
                 $scope.hasErrAge = 'is-invalid';
             }
-        }
+        };
 
         $scope.changeGender = function () {
             if ($scope.gender !== '') {
@@ -138,7 +136,7 @@ angular.module('myApp.Task3', ['ngRoute'])
                     .catch((err) => {
 
                         if (err.status === 401) {
-                            return refreshToken($scope.changeGender);
+                            refreshToken($scope.changeGender);
                         }
 
 
@@ -147,7 +145,7 @@ angular.module('myApp.Task3', ['ngRoute'])
             } else {
                 $scope.hasErrGender = 'is-invalid';
             }
-        }
+        };
 
         $scope.changePass = function () {
 
@@ -234,9 +232,8 @@ angular.module('myApp.Task3', ['ngRoute'])
                     window.location.href = '#!/Task2';
                 })
                 .catch((err) => {
-                    console.log(err);
+                    console.log(err.data);
                 });
-
 
         };
 

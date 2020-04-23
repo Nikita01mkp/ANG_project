@@ -22,7 +22,6 @@ angular.module('myApp.Task2', ['ngRoute'])
         $scope.myPoint = '';
         $scope.fieldLog = '';
         $scope.fieldPass = '';
-        // $rootScope.fonOfbody = 'Task3/fon.jpg';
 
 
         $scope.validBack = function (i) {
@@ -38,7 +37,7 @@ angular.module('myApp.Task2', ['ngRoute'])
                     $scope.hasErrMail = '';
             }
 
-        }
+        };
 
         $scope.comeIn = function () {
 
@@ -81,10 +80,10 @@ angular.module('myApp.Task2', ['ngRoute'])
                 }
                 if (($scope.password === '') || !($scope.password === $scope.rePassword)) {
                     $scope.hasErrPass = 'is-invalid';
-                    $scope.fieldPass = 'Obligatory field'
+                    $scope.fieldPass = 'Obligatory field';
                 }
             }
-        }
+        };
 
 
 

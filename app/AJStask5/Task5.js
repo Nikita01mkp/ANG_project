@@ -19,7 +19,6 @@ angular.module('myApp.Task5', ['ngRoute'])
                 .then((resp) => {
 
                     $scope.home = resp.data;
-                    console.log($scope.home.length);
                     getRoomsName();
                     $scope.mas = $scope.arrofhm();
                     $scope.inputts5 = $scope.mas[$scope.selectedIndex];
@@ -45,7 +44,6 @@ angular.module('myApp.Task5', ['ngRoute'])
             $http.post('http://localhost:3000/api/homes/rooms/' + localStorage.getItem('userToken'), obj)
                 .then((resp) => {
                     $scope.room = resp.data;
-                    console.log($scope.room);
                     $scope.masOfRooms = $scope.arrOfRoom();
                     $scope.roomNm = $scope.masOfRooms[$scope.selectedRoomIndex];
 
@@ -86,14 +84,13 @@ angular.module('myApp.Task5', ['ngRoute'])
                 });
 
         }
-        getHomesName();
 
+        getHomesName();
 
 
         $scope.arrofhm = function () { //возвращает массив с названием домов
 
             let arr = [];
-            console.log($scope.home);
             for (let i = 0; i < $scope.home.length; i++) {
                 arr[i] = $scope.home[i].homeName;
             }
@@ -112,14 +109,12 @@ angular.module('myApp.Task5', ['ngRoute'])
         };
 
 
-
-
-
-
         $scope.SelectedHome = '';
         $scope.SelectedRoom = '';
         $scope.selectedIndex = 0;
         $scope.selectedRoomIndex = 0;
+        $scope.InvFeedBackRoom = '';
+        $scope.InvFeedBackHome = '';
 
         $scope.GetInd = function (i) {
             $scope.inputts5 = $scope.mas[i];
@@ -144,22 +139,26 @@ angular.module('myApp.Task5', ['ngRoute'])
         $scope.Save = function () {
 
             if (($scope.inputts5 !== '') && ($scope.inputts5.replace(/\s+/g, '') !== 0)) {
+                if ($scope.inputts5.length < 20) {
+                    let obj = {};
+                    obj.homeName = $scope.inputts5;
+                    obj.homeId = $scope.home[$scope.selectedIndex]._id;
+                    $http.post('http://localhost:3000/api/homes/updateHome/' + localStorage.getItem('userToken'), obj)
+                        .then((resp) => {
+                            getHomesName();
+                        })
+                        .catch((err) => {
 
-                let obj = {};
-                obj.homeName = $scope.inputts5;
-                obj.homeId = $scope.home[$scope.selectedIndex]._id;
-                $http.post('http://localhost:3000/api/homes/updateHome/' + localStorage.getItem('userToken'), obj)
-                    .then((resp) => {
-                        // $scope.selectedIndex = $scope.home.length;
-                        getHomesName();
-                    })
-                    .catch((err) => {
+                            if (err.status === 401) {
+                                refreshToken($scope.Save);
+                            }
 
-                        if(err.status === 401){
-                            refreshToken($scope.Save);
-                        }
-
-                    });
+                        });
+                } else {
+                    $scope.hasErrTS5 = 'has-errorts5';
+                    $scope.hasErrBtn = 'has-errorts5';
+                    $scope.InvFeedBackHome = "Name have to less than 20 symbols";
+                }
 
             } else {
                 $scope.hasErrTS5 = 'has-errorts5';
@@ -172,20 +171,23 @@ angular.module('myApp.Task5', ['ngRoute'])
         $scope.saveRoomName = function () {
 
             if (($scope.roomNm !== '') && ($scope.roomNm.replace(/\s+/g, '') !== 0)) {
-                // $scope.masOfRooms[$scope.selectedRoomIndex] = $scope.roomNm;
-                // $scope.home[$scope.selectedIndex].rooms[$scope.selectedRoomIndex].roomName = $scope.roomNm;
-                let obj = {};
-                obj.roomId = $scope.room[$scope.selectedRoomIndex]._id;
-                obj.roomName = $scope.roomNm;
-                $http.post('http://localhost:3000/api/homes/updateRoom/' + localStorage.getItem('userToken'), obj)
-                    .then((resp) => {
-                        getRoomsName();
-                    })
-                    .catch((err) => {
-                        if(err.status === 401){
-                            refreshToken($scope.Save);
-                        }
-                    });
+                if ($scope.roomNm.length < 20) {
+                    let obj = {};
+                    obj.roomId = $scope.room[$scope.selectedRoomIndex]._id;
+                    obj.roomName = $scope.roomNm;
+                    $http.post('http://localhost:3000/api/homes/updateRoom/' + localStorage.getItem('userToken'), obj)
+                        .then((resp) => {
+                            getRoomsName();
+                        })
+                        .catch((err) => {
+                            if (err.status === 401) {
+                                refreshToken($scope.Save);
+                            }
+                        });
+                } else {
+                    $scope.hasErrRoom = 'has-errorts5';
+                    $scope.InvFeedBackRoom = "Name have to less than 20 symbols";
+                }
             } else {
                 $scope.hasErrRoom = 'has-errorts5';
 
@@ -197,48 +199,104 @@ angular.module('myApp.Task5', ['ngRoute'])
         $scope.bkCol = function () {
             $scope.hasErrTS5 = '';
             $scope.hasErrBtn = '';
+            $scope.InvFeedBackHome = "";
         };
 
         $scope.backColRoom = function () {
             $scope.hasErrRoom = '';
+            $scope.InvFeedBackRoom = "";
         };
 
-        $scope.addHome = function() {
-            function ref() {
-                let obj = {};
-                obj.homeName = $scope.inputts5;
-                $http.post('http://localhost:3000/api/homes/addHome/' + localStorage.getItem('userToken'), obj)
-                    .then((resp) => {
-                        console.log("SUCCESS");
-                        $scope.selectedIndex = $scope.home.length;
-                        getHomesName();
-                        $scope.SelectedHome = $scope.home.length.toString();
-                    })
-                    .catch((err) => {
-                        if (err.status === 401) {
-                            refreshToken(ref);
-                        }
-                        console.log("ERROR from add home!!!!");
-                    });
+        $scope.addHome = function () {
+            if (($scope.inputts5 !== '') && ($scope.inputts5.replace(/\s+/g, '') !== 0)) {
+                if ($scope.inputts5.length < 20) {
+                    let obj = {};
+                    obj.homeName = $scope.inputts5;
+                    $http.post('http://localhost:3000/api/homes/addHome/' + localStorage.getItem('userToken'), obj)
+                        .then((resp) => {
+                            $scope.selectedIndex = $scope.home.length;
+                            getHomesName();
+                            $scope.SelectedHome = $scope.home.length.toString();
+                        })
+                        .catch((err) => {
+                            if (err.status === 401) {
+                                refreshToken($scope.addHome);
+                            }
+                        });
+                } else {
+                    $scope.hasErrTS5 = 'has-errorts5';
+                    $scope.hasErrBtn = 'has-errorts5';
+                    $scope.InvFeedBackHome = "Name have to less than 20 symbols";
+                }
+
+            } else {
+                $scope.hasErrTS5 = 'has-errorts5';
+                $scope.hasErrBtn = 'has-errorts5';
+
             }
-            ref();
         };
 
-        $scope.addRoom = function() {
+        $scope.addRoom = function () {
+            if (($scope.roomNm !== '') && ($scope.roomNm.replace(/\s+/g, '') !== 0)) {
+                if ($scope.roomNm.length < 20) {
 
+                    let obj = {};
+                    obj.roomName = $scope.roomNm;
+                    obj.homeId = $scope.home[$scope.selectedIndex]._id;
+                    $http.post('http://localhost:3000/api/homes/addRoom/' + localStorage.getItem('userToken'), obj)
+                        .then((resp) => {
+                            console.log("SUCCESS");
+                            $scope.selectedRoomIndex = $scope.room.length;
+                            $scope.SelectedRoom = $scope.room.length.toString();
+                            getRoomsName();
+                        })
+                        .catch((err) => {
+                            if (err.status === 401) {
+                                refreshToken($scope.addRoom);
+                            }
+                        });
+                } else {
+                    $scope.hasErrRoom = 'has-errorts5';
+                    $scope.InvFeedBackRoom = "Name have to less than 20 symbols";
+                }
+            } else {
+                $scope.hasErrRoom = 'has-errorts5';
+
+            }
+
+        };
+
+        $scope.deleteHome = function () {
             let obj = {};
-            obj.roomName = $scope.roomNm;
             obj.homeId = $scope.home[$scope.selectedIndex]._id;
-            $http.post('http://localhost:3000/api/homes/addRoom/' + localStorage.getItem('userToken'), obj)
+            $http.post('http://localhost:3000/api/homes/deleteHome/' + localStorage.getItem('userToken'), obj)
                 .then((resp) => {
-                    console.log("SUCCESS");
-                    $scope.selectedRoomIndex = $scope.room.length;
-                    $scope.SelectedRoom = $scope.room.length.toString();
+                    $scope.selectedIndex = 0;
+                    $scope.selectedRoomIndex = 0;
+                    $scope.SelectedHome = "0";
+                    $scope.SelectedRoom = '0';
+                    getHomesName();
+                })
+                .catch((err) => {
+                    if (err.status === 401) {
+                        refreshToken($scope.deleteHome);
+                    }
+                });
+
+        };
+
+        $scope.deleteRoom = function () {
+            let obj = {};
+            obj.roomId = $scope.room[$scope.selectedRoomIndex]._id;
+            $http.post('http://localhost:3000/api/homes/deleteRoom/' + localStorage.getItem('userToken'), obj)
+                .then((resp) => {
+                    $scope.selectedRoomIndex = 0;
+                    $scope.SelectedRoom = '0';
                     getRoomsName();
                 })
                 .catch((err) => {
-                    if(err.status === 401){
-                        refreshToken($scope.addRoom);
+                    if (err.status === 401) {
+                        refreshToken($scope.deleteHome);
                     }
                 });
 
