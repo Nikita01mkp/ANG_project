@@ -8,6 +8,7 @@ angular.module('myApp', [
   'myApp.Task3',
   'myApp.Task1',
   'myApp.Task5',
+  'myApp.Control',
   'myApp.version'
 ]).
 config(['$locationProvider', '$routeProvider', function($locationProvider, $routeProvider) {

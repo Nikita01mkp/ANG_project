@@ -10,7 +10,8 @@ angular.module('myApp.Task5', ['ngRoute'])
     }])
 
 
-    .controller('CtrlT5', ['$scope', '$http', function ($scope, $http) {
+    .controller('CtrlT5', ['$scope', '$http', '$rootScope', function ($scope, $http, $rootScope) {
+
 
 
         function getHomesName() {
@@ -22,6 +23,7 @@ angular.module('myApp.Task5', ['ngRoute'])
                     getRoomsName();
                     $scope.mas = $scope.arrofhm();
                     $scope.inputts5 = $scope.mas[$scope.selectedIndex];
+                    $rootScope.isUser = true;
 
                 })
                 .catch((err) => {
@@ -302,4 +304,4 @@ angular.module('myApp.Task5', ['ngRoute'])
 
         };
 
-    }])
+    }]);

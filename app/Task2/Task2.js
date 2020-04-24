@@ -11,7 +11,10 @@ angular.module('myApp.Task2', ['ngRoute'])
 
     .controller('CtrlT2', ['$scope', '$rootScope', '$http', function ($scope, $rootScope, $http) {
 
-
+        $rootScope.isUser = (localStorage.getItem('login') === 'true');
+        if($rootScope.isUser){
+            window.location.href = '#!/Task3';
+        }
 
         $scope.hasErrLog = '';
         $scope.hasErrPass = '';
@@ -55,6 +58,8 @@ angular.module('myApp.Task2', ['ngRoute'])
                         localStorage.setItem("userRefreshToken", resp.data.refreshToken);
                         $scope.login = '';
                         $scope.password = '';
+                        $rootScope.isUser = true;
+                        localStorage.setItem('login', 'true');
                         window.location.href = '#!/Task3';
                     })
                     .catch((err) => {
