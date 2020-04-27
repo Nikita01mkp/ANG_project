@@ -12,7 +12,7 @@ angular.module('myApp.Task2', ['ngRoute'])
     .controller('CtrlT2', ['$scope', '$rootScope', '$http', function ($scope, $rootScope, $http) {
 
         $rootScope.isUser = (localStorage.getItem('login') === 'true');
-        if($rootScope.isUser){
+        if ($rootScope.isUser) {
             window.location.href = '#!/Task3';
         }
 
@@ -56,11 +56,19 @@ angular.module('myApp.Task2', ['ngRoute'])
                     .then((resp) => {
                         localStorage.setItem("userToken", resp.data.token);
                         localStorage.setItem("userRefreshToken", resp.data.refreshToken);
+                        localStorage.setItem("UserRole", resp.data.userRole);
                         $scope.login = '';
                         $scope.password = '';
-                        $rootScope.isUser = true;
-                        localStorage.setItem('login', 'true');
-                        window.location.href = '#!/Task3';
+                        $rootScope.isUser = resp.data.userRole;
+                        if (localStorage.getItem("UserRole") === "User") {
+                            window.location.href = '#!/Task3';
+                        }else {
+                            if(localStorage.getItem("UserRole") === "Admin"){
+                                window.location.href = '#!/ControlUser';
+                            }else {
+                                window.location.href = '#!/Task3';
+                            }
+                        }
                     })
                     .catch((err) => {
                         if (err.status === 400) {
@@ -89,7 +97,6 @@ angular.module('myApp.Task2', ['ngRoute'])
                 }
             }
         };
-
 
 
     }])

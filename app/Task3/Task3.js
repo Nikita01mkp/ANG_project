@@ -21,7 +21,7 @@ angular.module('myApp.Task3', ['ngRoute'])
                     $scope.name = $scope.currentUser.name;
                     $scope.age = $scope.currentUser.age;
                     $scope.gender = $scope.currentUser.gender;
-                    $rootScope.isUser = true;
+                    $rootScope.isUser = 'User';
                 })
                 .catch((err) => {
                     if (err.status === 401) {
@@ -30,7 +30,7 @@ angular.module('myApp.Task3', ['ngRoute'])
 
                     if (err.status === 403) {
                         $rootScope.isUser = false;
-                        localStorage.setItem('login', 'false');
+                        localStorage.setItem('UserRole', '');
                         window.location.href = '#!/Task2';
                     }
                 });
@@ -56,8 +56,8 @@ angular.module('myApp.Task3', ['ngRoute'])
                 .catch((err) => {
                     console.log(err.data);
                     if(err.status === 403){
-                        $rootScope.isUser = false;
-                        localStorage.setItem('login', 'false');
+                        $rootScope.isUser = '';
+                        localStorage.setItem('UserRole', '');
                         window.location.href = '#!/Task2';
                     }
                 });
@@ -212,6 +212,7 @@ angular.module('myApp.Task3', ['ngRoute'])
                     .then((resp) => {
                         localStorage.removeItem("userToken");
                         localStorage.removeItem("userRefreshToken");
+                        localStorage.removeItem("UserRole");
                         window.location.href = '#!/Task2';
                     })
                     .catch((err) => {
@@ -237,8 +238,8 @@ angular.module('myApp.Task3', ['ngRoute'])
                 .then((resp) => {
                     localStorage.removeItem("userToken");
                     localStorage.removeItem("userRefreshToken");
-                    $rootScope.isUser = false;
-                    localStorage.setItem('login', 'false');
+                    localStorage.removeItem("UserRole");
+                    $rootScope.isUser = '';
                     window.location.href = '#!/Task2';
                 })
                 .catch((err) => {

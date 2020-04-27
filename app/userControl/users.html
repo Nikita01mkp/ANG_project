@@ -1,15 +1,16 @@
 <div style="color: white">
 
     <div style="padding: 10px; width: 500px">
-        <h1>Users</h1>
+        <h1>Users:</h1>
         <div class="input-group">
-            <select class="form-control form-control-lg">
+            <select class="form-control form-control-lg" style="text-align-last: center"  ng-init="SelectedUser = '0'"
+                    ng-model="SelectedUser" ng-change="GetInd(SelectedUser)">
 
-<!--                <option value="{{$index}}" ng-repeat="Homes in mas  track by $index">{{Homes}}</option>-->
+                <option value="{{$index}}" ng-repeat="Users in userLogins  track by $index">{{Users}}</option>
             </select>
 
             <div class="input-group-append">
-                <button class="input-group-text">delete
+                <button class="input-group-text" ng-click="deleteUser()">delete
                 </button>
             </div>
         </div>

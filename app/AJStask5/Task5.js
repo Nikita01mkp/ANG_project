@@ -23,7 +23,7 @@ angular.module('myApp.Task5', ['ngRoute'])
                     getRoomsName();
                     $scope.mas = $scope.arrofhm();
                     $scope.inputts5 = $scope.mas[$scope.selectedIndex];
-                    $rootScope.isUser = true;
+                    $rootScope.isUser = 'User';
 
                 })
                 .catch((err) => {
