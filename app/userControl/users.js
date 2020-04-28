@@ -29,6 +29,10 @@ angular.module('myApp.Control', ['ngRoute'])
                     }
 
                     if (err.status === 403) {
+                        window.location.href = '#!/Task3';
+                    }
+
+                    if (err.status === 405) {
                         window.location.href = '#!/Task2';
                     }
 
@@ -86,6 +90,35 @@ angular.module('myApp.Control', ['ngRoute'])
                     if (err.status === 401) {
                         refreshToken($scope.deleteUser);
                     }
+
+                    if (err.status === 403) {
+                        window.location.href = '#!/Task3';
+                    }
+
+                    if (err.status === 405) {
+                        window.location.href = '#!/Task2';
+                    }
+
+                });
+
+        };
+
+        $rootScope.userLogout = function () {
+
+            let obj = {
+                token: localStorage.getItem('userToken'),
+                refreshToken: localStorage.getItem('userRefreshToken')
+            };
+            $http.post('http://localhost:3000/api/users/token/delete', obj)
+                .then((resp) => {
+                    localStorage.removeItem("userToken");
+                    localStorage.removeItem("userRefreshToken");
+                    localStorage.removeItem("UserRole");
+                    $rootScope.isUser = '';
+                    window.location.href = '#!/Task2';
+                })
+                .catch((err) => {
+                    console.log(err.data);
                 });
 
         };

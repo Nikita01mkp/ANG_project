@@ -66,7 +66,6 @@ angular.module('myApp.Task3', ['ngRoute'])
 
         getUser();
 
-
         $scope.oldPassword = '';
         $scope.newPassword = '';
         $scope.reNewPassword = '';
@@ -228,7 +227,7 @@ angular.module('myApp.Task3', ['ngRoute'])
             }
         };
 
-        $scope.userLogout = function () {
+        $rootScope.userLogout = function () {
 
             let obj = {
                 token: localStorage.getItem('userToken'),

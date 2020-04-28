@@ -14,7 +14,17 @@ angular.module('myApp', [
 config(['$locationProvider', '$routeProvider', function($locationProvider, $routeProvider) {
   $locationProvider.hashPrefix('!');
 
-  $routeProvider.otherwise({redirectTo: '/Task2'});
+  if(localStorage.getItem('UserRole') === null) {
+    $routeProvider.otherwise({redirectTo: '/Task2'});
+  }else{
+    if(((localStorage.getItem('UserRole')) === 'User') || (localStorage.getItem('UserRole') === 'undefined')) {
+      $routeProvider.otherwise({redirectTo: '/Task3'});
+    }
+    if((localStorage.getItem('UserRole')) === 'Admin') {
+      $routeProvider.otherwise({redirectTo: '/ControlUser'});
+    }
+
+  }
 
 
 }]);
