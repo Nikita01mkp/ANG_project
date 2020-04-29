@@ -12,9 +12,18 @@ angular.module('myApp.Control', ['ngRoute'])
 
     .controller('ControlUser', ['$scope', '$http', '$rootScope', function ($scope, $http, $rootScope) {
 
+        $scope.selectedUser = '0';
+        $scope.selectedIndex = 0;
+
         function getUsers() {
 
-            $http.get('http://localhost:3000/api/control/users/' + localStorage.getItem('userToken'))
+            let params = {
+                params: {
+                    token: localStorage.getItem('userToken')
+                }
+            };
+
+            $http.get('http://localhost:3000/api/control/users/', params)
                 .then((resp) => {
 
                     $rootScope.isUser = 'Admin';
@@ -62,8 +71,7 @@ angular.module('myApp.Control', ['ngRoute'])
 
         }
         getUsers();
-        $scope.selectedUser = '0';
-        $scope.selectedIndex = 0;
+
 
         function getUsersLogin() {
             const mas = [];
@@ -78,13 +86,17 @@ angular.module('myApp.Control', ['ngRoute'])
         };
 
         $scope.deleteUser = function () {
-            let obj = {};
-            obj._id = $scope.usersData[$scope.selectedIndex]._id;
-            $http.post('http://localhost:3000/api/control/deleteUser/' + localStorage.getItem('userToken'), obj)
+            let params = {
+                params: {
+                    token: localStorage.getItem('userToken'),
+                    _id: $scope.usersData[$scope.selectedIndex]._id,
+                }
+            };
+            $http.delete('http://localhost:3000/api/control/user/', params)
                 .then((resp) => {
-                    getUsers();
                     $scope.selectedIndex = 0;
-                    $scope.selectedUser = '0';
+                    $scope.SelectedUser = '0';
+                    getUsers();
                 })
                 .catch((err) => {
                     if (err.status === 401) {

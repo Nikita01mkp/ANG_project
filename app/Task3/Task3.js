@@ -11,11 +11,24 @@ angular.module('myApp.Task3', ['ngRoute'])
 
     .controller('CtrlT3', ['$scope', '$rootScope', '$http', function ($scope, $rootScope, $http) {
 
+        $scope.oldPassword = '';
+        $scope.newPassword = '';
+        $scope.reNewPassword = '';
+        $scope.hasErrName = '';
+        $scope.hasErrAge = '';
+        $scope.hasErrGender = '';
+        $scope.hasErrOldPass = '';
+        $scope.hasErrNewPass = '';
+        $scope.fieldPass = '';
+        $scope.fieldNewPass = '';
 
         function getUser() {
-            $scope.token = localStorage.getItem('userToken');
-
-            $http.get('http://localhost:3000/api/users/' + $scope.token)
+            let params = {
+                params: {
+                    token: localStorage.getItem('userToken')
+                }
+            };
+            $http.get('http://localhost:3000/api/users/', params)
                 .then((resp) => {
                     $scope.currentUser = resp.data;
                     $scope.name = $scope.currentUser.name;
@@ -55,7 +68,7 @@ angular.module('myApp.Task3', ['ngRoute'])
                 })
                 .catch((err) => {
                     console.log(err.data);
-                    if(err.status === 403){
+                    if (err.status === 403) {
                         $rootScope.isUser = '';
                         localStorage.setItem('UserRole', '');
                         window.location.href = '#!/Task2';
@@ -66,22 +79,16 @@ angular.module('myApp.Task3', ['ngRoute'])
 
         getUser();
 
-        $scope.oldPassword = '';
-        $scope.newPassword = '';
-        $scope.reNewPassword = '';
-        $scope.hasErrName = '';
-        $scope.hasErrAge = '';
-        $scope.hasErrGender = '';
-        $scope.hasErrOldPass = '';
-        $scope.hasErrNewPass = '';
-        $scope.fieldPass = '';
-        $scope.fieldNewPass = '';
-
 
         $scope.changeName = function () {
+            let params = {
+                params: {
+                    token: localStorage.getItem('userToken')
+                }
+            };
             if ($scope.name !== '') {
                 $scope.currentUser.name = $scope.name;
-                $http.put("http://localhost:3000/api/users/change/" + $scope.token, $scope.currentUser)
+                $http.put("http://localhost:3000/api/users/change/", $scope.currentUser, params)
                     .then((resp) => {
 
                         $scope.gender = $scope.currentUser.gender;
@@ -106,8 +113,13 @@ angular.module('myApp.Task3', ['ngRoute'])
 
         $scope.changeAge = function () {
             if ($scope.age !== '') {
+                let params = {
+                    params: {
+                        token: localStorage.getItem('userToken')
+                    }
+                };
                 $scope.currentUser.age = $scope.age;
-                $http.put("http://localhost:3000/api/users/change/" + $scope.token, $scope.currentUser)
+                $http.put("http://localhost:3000/api/users/change/", $scope.currentUser, params)
                     .then((resp) => {
 
 
@@ -130,9 +142,13 @@ angular.module('myApp.Task3', ['ngRoute'])
 
         $scope.changeGender = function () {
             if ($scope.gender !== '') {
-
+                let params = {
+                    params: {
+                        token: localStorage.getItem('userToken')
+                    }
+                };
                 $scope.currentUser.gender = $scope.gender;
-                $http.put("http://localhost:3000/api/users/change/" + $scope.token, $scope.currentUser)
+                $http.put("http://localhost:3000/api/users/change/", $scope.currentUser, params)
                     .then((resp) => {
 
 
@@ -156,58 +172,68 @@ angular.module('myApp.Task3', ['ngRoute'])
 
         $scope.changePass = function () {
 
-            if ($scope.newPassword === $scope.reNewPassword) {
-                if ($scope.newPassword !== '') {
-
-                    let localObj = {};
-                    localObj.newPassword = $scope.newPassword;
-                    localObj.oldPassword = $scope.oldPassword;
-
-                    $http.put("http://localhost:3000/api/users/changePassword/" + $scope.token, localObj)
-                        .then((resp) => {
-
-                            $scope.oldPassword = '';
-                            $scope.newPassword = '';
-                            $scope.reNewPassword = '';
-
-                        })
-                        .catch((err) => {
-
-                            if (err.status === 401) {
-                                return refreshToken($scope.changePass);
-                            }
-
-                            if (err.status === 403) {
-                                $scope.fieldPass = err.data;
-                            }
-
-                            $scope.oldPassword = '';
-                            $scope.newPassword = '';
-                            $scope.reNewPassword = '';
-                            $scope.hasErrOldPass = 'is-invalid';
-
-                        });
-
-
-                } else {
-                    $scope.fieldNewPass = 'Enter a new password';
-                    $scope.hasErrNewPass = 'is-invalid';
-
-                }
-            } else {
+            if ($scope.newPassword !== $scope.reNewPassword) {
                 $scope.fieldNewPass = "Passwords do not match";
                 $scope.newPassword = '';
                 $scope.reNewPassword = '';
                 $scope.hasErrNewPass = 'is-invalid';
+                return;
+            }
+
+            if ($scope.newPassword === '') {
+                $scope.fieldNewPass = 'Enter a new password';
+                $scope.hasErrNewPass = 'is-invalid';
+                return;
             }
 
 
-        }
+            let localObj = {};
+            localObj.newPassword = $scope.newPassword;
+            localObj.oldPassword = $scope.oldPassword;
+
+            let params = {
+                params: {
+                    token: localStorage.getItem('userToken')
+                }
+            };
+
+            $http.put("http://localhost:3000/api/users/changePassword/", localObj, params)
+                .then((resp) => {
+
+                    $scope.oldPassword = '';
+                    $scope.newPassword = '';
+                    $scope.reNewPassword = '';
+
+                })
+                .catch((err) => {
+
+                    if (err.status === 401) {
+                        return refreshToken($scope.changePass);
+                    }
+
+                    if (err.status === 403) {
+                        $scope.fieldPass = err.data;
+                    }
+
+                    $scope.oldPassword = '';
+                    $scope.newPassword = '';
+                    $scope.reNewPassword = '';
+                    $scope.hasErrOldPass = 'is-invalid';
+
+                });
+
+
+        };
 
         $scope.userDelete = function () {
             let request = confirm("Are you sure?");
             if (request) {
-                $http.delete("http://localhost:3000/api/users/" + $scope.token)
+                let params = {
+                    params: {
+                        token: localStorage.getItem('userToken')
+                    }
+                };
+                $http.delete("http://localhost:3000/api/users/", params)
                     .then((resp) => {
                         localStorage.removeItem("userToken");
                         localStorage.removeItem("userRefreshToken");
@@ -218,6 +244,10 @@ angular.module('myApp.Task3', ['ngRoute'])
 
                         if (err.status === 401) {
                             refreshToken($scope.userDelete);
+                        }
+
+                        if(err.status === 403){
+                            window.location.href = '#!/Task2';
                         }
 
                     });
@@ -263,9 +293,17 @@ angular.module('myApp.Task3', ['ngRoute'])
                     $scope.hasErrOldPass = '';
                 case '5':
                     $scope.hasErrNewPass = '';
+                    break;
+                default:
+                    $scope.hasErrName = '';
+                    $scope.hasErrAge = '';
+                    $scope.hasErrGender = '';
+                    $scope.hasErrOldPass = '';
+                    $scope.hasErrNewPass = '';
             }
 
         };
 
 
-    }]);
+    }])
+;

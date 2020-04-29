@@ -38,65 +38,68 @@ angular.module('myApp.Task2', ['ngRoute'])
                     break;
                 case '3':
                     $scope.hasErrMail = '';
+                    break;
+                default:
+                    $scope.hasErrLog = '';
+                    $scope.hasErrPass = '';
+                    $scope.hasErrMail = '';
             }
 
         };
 
         $scope.comeIn = function () {
 
-
-            if (!($scope.login === '') && !($scope.password === '')) {
-
-                let obj = {};
-                obj.userLogin = $scope.login;
-                obj.userPassword = $scope.password;
-                obj.token = localStorage.getItem('userToken');
-
-                $http.put('http://localhost:3000/api/users', obj)
-                    .then((resp) => {
-                        localStorage.setItem("userToken", resp.data.token);
-                        localStorage.setItem("userRefreshToken", resp.data.refreshToken);
-                        localStorage.setItem("UserRole", resp.data.userRole);
-                        $scope.login = '';
-                        $scope.password = '';
-                        $rootScope.isUser = resp.data.userRole;
-                        if (localStorage.getItem("UserRole") === "User") {
-                            window.location.href = '#!/Task3';
-                        }else {
-                            if(localStorage.getItem("UserRole") === "Admin"){
-                                window.location.href = '#!/ControlUser';
-                            }else {
-                                window.location.href = '#!/Task3';
-                            }
-                        }
-                    })
-                    .catch((err) => {
-                        if (err.status === 400) {
-                            $scope.hasErrLog = 'is-invalid';
-                            $scope.fieldLog = err.data;
-                            $scope.password = '';
-                        }
-                        if (err.status === 401) {
-                            $scope.hasErrPass = 'is-invalid';
-                            $scope.fieldPass = err.data;
-                            $scope.password = '';
-                        }
-
-                    });
-
-
-            } else {
-
-                if ($scope.login === '') {
-                    $scope.hasErrLog = 'is-invalid';
-                    $scope.fieldLog = 'Obligatory field';
-                }
-                if (($scope.password === '') || !($scope.password === $scope.rePassword)) {
-                    $scope.hasErrPass = 'is-invalid';
-                    $scope.fieldPass = 'Obligatory field';
-                }
+            if ($scope.login === '') {
+                $scope.hasErrLog = 'is-invalid';
+                $scope.fieldLog = 'Obligatory field';
+                return;
             }
+            if ($scope.password === '') {
+                $scope.hasErrPass = 'is-invalid';
+                $scope.fieldPass = 'Obligatory field';
+                return;
+            }
+
+
+            let obj = {};
+            obj.userLogin = $scope.login;
+            obj.userPassword = $scope.password;
+            obj.token = localStorage.getItem('userToken');
+
+            $http.put('http://localhost:3000/api/users', obj)
+                .then((resp) => {
+                    localStorage.setItem("userToken", resp.data.token);
+                    localStorage.setItem("userRefreshToken", resp.data.refreshToken);
+                    localStorage.setItem("UserRole", resp.data.userRole);
+                    $scope.login = '';
+                    $scope.password = '';
+                    $rootScope.isUser = resp.data.userRole;
+                    if (localStorage.getItem("UserRole") === "User") {
+                        window.location.href = '#!/Task3';
+                    } else {
+                        if (localStorage.getItem("UserRole") === "Admin") {
+                            window.location.href = '#!/ControlUser';
+                        } else {
+                            window.location.href = '#!/Task3';
+                        }
+                    }
+                })
+                .catch((err) => {
+                    if (err.status === 400) {
+                        $scope.hasErrLog = 'is-invalid';
+                        $scope.fieldLog = err.data;
+                        $scope.password = '';
+                    }
+                    if (err.status === 401) {
+                        $scope.hasErrPass = 'is-invalid';
+                        $scope.fieldPass = err.data;
+                        $scope.password = '';
+                    }
+
+                });
+
+
         };
 
 
-    }])
+    }]);
