@@ -451,20 +451,22 @@ angular.module('myApp.Task1', ['ngRoute'])
         $scope.InvFeedbackPass = "";
         $scope.btnDisabled = '';
         $scope.errEmailFierld = '';
+        $scope.invFeedbackLog = '';
 
         $scope.inputs = {
-            login : '',
-            password : '',
-            rePassword : '',
-            mail : '',
-            age : '',
-            name : '',
+            login: '',
+            password: '',
+            rePassword: '',
+            mail: '',
+            age: '',
+            name: '',
         };
 
 
         $scope.send = function () {
 
             if ($scope.inputs.login === '') {
+                $scope.invFeedbackLog = 'Obligatory field';
                 $scope.hasErrLog = 'is-invalid';
                 return;
             }
@@ -473,7 +475,7 @@ angular.module('myApp.Task1', ['ngRoute'])
                 $scope.hasErrPass = 'is-invalid';
                 return;
             }
-            if($scope.inputs.rePassword !== $scope.inputs.password){
+            if ($scope.inputs.rePassword !== $scope.inputs.password) {
                 $scope.InvFeedbackPass = 'Passwords do not match';
                 $scope.hasErrPass = 'is-invalid';
                 $scope.inputs.password = '';
@@ -487,29 +489,35 @@ angular.module('myApp.Task1', ['ngRoute'])
             }
 
 
-                $scope.btnDisabled = true;
-                let obj = $scope.inputs;
-                console.log(obj);
+            $scope.btnDisabled = true;
+            let obj = $scope.inputs;
+            console.log(obj);
 
 
-                $http.post('http://localhost:3000/api/users ', $scope.inputs)
-                    .then((resp) => {
-                        window.location.href = '#!/Task2';
-                        $scope.inputs.login = '';
-                        $scope.inputs.password = '';
-                        $scope.inputs.rePassword = '';
-                        $scope.inputs.mail = '';
-                        $scope.inputs.age = '';
-                        $scope.inputs.name = '';
-                        $scope.btnDisabled = false;
-                    })
-                    .catch((err) => {
-                        if(err.status === 406){
-                            $scope.errEmailFierld = err.data;
-                            $scope.hasErrMail = 'is-invalid';
-                        }
-                        console.log("Ошибка отправки данных пользователя", err.data);
-                    });
+            $http.post('http://localhost:3000/api/users ', $scope.inputs)
+                .then((resp) => {
+                    window.location.href = '#!/Task2';
+                    $scope.inputs.login = '';
+                    $scope.inputs.password = '';
+                    $scope.inputs.rePassword = '';
+                    $scope.inputs.mail = '';
+                    $scope.inputs.age = '';
+                    $scope.inputs.name = '';
+                    $scope.btnDisabled = false;
+                })
+                .catch((err) => {
+                    if (err.status === 406) {
+                        $scope.errEmailFierld = err.data;
+                        $scope.hasErrMail = 'is-invalid';
+                    }
+                    if (err.status === 412) {
+                        $scope.invFeedbackLog = err.data;
+                        $scope.hasErrLog = 'is-invalid';
+                    }
+                    if (err.status === 400) {
+                        alert(err.data);
+                    }
+                });
 
 
         };

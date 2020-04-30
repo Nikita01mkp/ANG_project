@@ -102,7 +102,13 @@ angular.module('myApp.Task5', ['ngRoute'])
 
                 })
                 .catch((err) => {
-                    console.log(err);
+                    if (err.status === 403) {
+                        localStorage.removeItem("userToken");
+                        localStorage.removeItem("userRefreshToken");
+                        localStorage.removeItem("UserRole");
+                        $rootScope.isUser = '';
+                        window.location.href = '#!/Task2';
+                    }
                 });
 
         }

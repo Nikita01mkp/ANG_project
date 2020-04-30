@@ -46,6 +46,9 @@ angular.module('myApp.Task3', ['ngRoute'])
                         localStorage.setItem('UserRole', '');
                         window.location.href = '#!/Task2';
                     }
+                    if (err.status === 400){
+                        alert(err.data);
+                    }
                 });
         }
 
@@ -87,6 +90,7 @@ angular.module('myApp.Task3', ['ngRoute'])
                 }
             };
             if ($scope.name !== '') {
+                let name = $scope.currentUser.name;
                 $scope.currentUser.name = $scope.name;
                 $http.put("http://localhost:3000/api/users/change/", $scope.currentUser, params)
                     .then((resp) => {
@@ -99,6 +103,12 @@ angular.module('myApp.Task3', ['ngRoute'])
 
                         if (err.status === 401) {
                             refreshToken($scope.changeName);
+                        }
+                        if (err.status === 403) {
+                            $scope.gender = $scope.currentUser.gender;
+                            $scope.age = $scope.currentUser.age;
+                            $scope.currentUser.name = name;
+                            $scope.name = name;
                         }
 
                         console.log(err.data);
@@ -118,6 +128,7 @@ angular.module('myApp.Task3', ['ngRoute'])
                         token: localStorage.getItem('userToken')
                     }
                 };
+                let age = $scope.currentUser.age;
                 $scope.currentUser.age = $scope.age;
                 $http.put("http://localhost:3000/api/users/change/", $scope.currentUser, params)
                     .then((resp) => {
@@ -132,6 +143,12 @@ angular.module('myApp.Task3', ['ngRoute'])
                             refreshToken($scope.changeAge);
                         }
 
+                        if (err.status === 403) {
+                            $scope.gender = $scope.currentUser.gender;
+                            $scope.age = age;
+                            $scope.currentUser.age = age;
+                            $scope.name = $scope.currentUser.name;
+                        }
 
                     });
 
@@ -147,6 +164,7 @@ angular.module('myApp.Task3', ['ngRoute'])
                         token: localStorage.getItem('userToken')
                     }
                 };
+                let gender = $scope.currentUser.gender;
                 $scope.currentUser.gender = $scope.gender;
                 $http.put("http://localhost:3000/api/users/change/", $scope.currentUser, params)
                     .then((resp) => {
@@ -162,6 +180,12 @@ angular.module('myApp.Task3', ['ngRoute'])
                             refreshToken($scope.changeGender);
                         }
 
+                        if (err.status === 403){
+                            $scope.name = $scope.currentUser.name;
+                            $scope.age = $scope.currentUser.age;
+                            $scope.currentUser.gender = gender;
+                            $scope.gender = gender;
+                        }
 
                     });
 
@@ -213,12 +237,16 @@ angular.module('myApp.Task3', ['ngRoute'])
 
                     if (err.status === 403) {
                         $scope.fieldPass = err.data;
+                        $scope.oldPassword = '';
+                        $scope.newPassword = '';
+                        $scope.reNewPassword = '';
+                        $scope.hasErrOldPass = 'is-invalid';
                     }
 
-                    $scope.oldPassword = '';
-                    $scope.newPassword = '';
-                    $scope.reNewPassword = '';
-                    $scope.hasErrOldPass = 'is-invalid';
+                    if (err.status === 405){
+                        alert("Password was not been changed");
+                    }
+
 
                 });
 
@@ -250,6 +278,10 @@ angular.module('myApp.Task3', ['ngRoute'])
                             window.location.href = '#!/Task2';
                         }
 
+                        if(err.status === 405){
+                            alert("Something went wrong, please try again");
+                        }
+
                     });
 
             } else {
@@ -273,6 +305,13 @@ angular.module('myApp.Task3', ['ngRoute'])
                 })
                 .catch((err) => {
                     console.log(err.data);
+                    if(err.status === 403){
+                        localStorage.removeItem("userToken");
+                        localStorage.removeItem("userRefreshToken");
+                        localStorage.removeItem("UserRole");
+                        $rootScope.isUser = '';
+                        window.location.href = '#!/Task2';
+                    }
                 });
 
         };

@@ -45,6 +45,10 @@ angular.module('myApp.Control', ['ngRoute'])
                         window.location.href = '#!/Task2';
                     }
 
+                    if(err.status === 404){
+                        alert(err.data);
+                    }
+
                 });
         }
 
@@ -59,14 +63,21 @@ angular.module('myApp.Control', ['ngRoute'])
 
                     localStorage.setItem("userToken", resp.data.token);
                     localStorage.setItem("userRefreshToken", resp.data.refreshToken);
-
+                    $rootScope.isUser = 'Admin';
                     $scope.token = localStorage.getItem('userToken');
 
                     request();
 
                 })
                 .catch((err) => {
-                    console.log(err);
+
+                    if(err.status === 403){
+                        localStorage.removeItem("userToken");
+                        localStorage.removeItem("userRefreshToken");
+                        localStorage.removeItem("UserRole");
+                        $rootScope.isUser = '';
+                        window.location.href = '#!/Task2';
+                    }
                 });
 
         }
@@ -109,6 +120,10 @@ angular.module('myApp.Control', ['ngRoute'])
 
                     if (err.status === 405) {
                         window.location.href = '#!/Task2';
+                    }
+
+                    if(err.status === 404){
+                        alert(err.data);
                     }
 
                 });
