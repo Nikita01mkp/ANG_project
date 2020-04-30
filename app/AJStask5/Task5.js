@@ -45,6 +45,10 @@ angular.module('myApp.Task5', ['ngRoute'])
                     }
 
                     if (err.status === 403) {
+                        localStorage.removeItem("userToken");
+                        localStorage.removeItem("userRefreshToken");
+                        localStorage.removeItem("UserRole");
+                        $rootScope.isUser = '';
                         window.location.href = '#!/Task2';
                     }
                     if(err.status === 405){
@@ -78,7 +82,15 @@ angular.module('myApp.Task5', ['ngRoute'])
                     }
 
                     if (err.status === 403) {
+                        localStorage.removeItem("userToken");
+                        localStorage.removeItem("userRefreshToken");
+                        localStorage.removeItem("UserRole");
+                        $rootScope.isUser = '';
                         window.location.href = '#!/Task2';
+                    }
+
+                    if(err.status === 405){
+                        alert("Error, try again");
                     }
 
                 });
@@ -187,6 +199,25 @@ angular.module('myApp.Task5', ['ngRoute'])
                             refreshToken($scope.Save);
                         }
 
+                        if(err.status === 400){
+                            $scope.inputts5 = '';
+                            $scope.hasErrTS5 = 'has-errorts5';
+                            $scope.hasErrBtn = 'has-errorts5';
+                            $scope.InvFeedBackHome = err.data;
+                        }
+
+                        if (err.status === 403) {
+                            localStorage.removeItem("userToken");
+                            localStorage.removeItem("userRefreshToken");
+                            localStorage.removeItem("UserRole");
+                            $rootScope.isUser = '';
+                            window.location.href = '#!/Task2';
+                        }
+
+                        if(err.status === 405){
+                            alert("Error, try again");
+                        }
+
                     });
             } else {
                 $scope.hasErrTS5 = 'has-errorts5';
@@ -222,6 +253,25 @@ angular.module('myApp.Task5', ['ngRoute'])
                         if (err.status === 401) {
                             refreshToken($scope.Save);
                         }
+
+                        if(err.status === 400){
+                            $scope.inputts5 = '';
+                            $scope.hasErrRoom = 'has-errorts5';
+                            $scope.InvFeedBackRoom = err.data;
+                        }
+
+                        if (err.status === 403) {
+                            localStorage.removeItem("userToken");
+                            localStorage.removeItem("userRefreshToken");
+                            localStorage.removeItem("UserRole");
+                            $rootScope.isUser = '';
+                            window.location.href = '#!/Task2';
+                        }
+
+                        if(err.status === 405){
+                            alert("Error, try again");
+                        }
+
                     });
             } else {
                 $scope.hasErrRoom = 'has-errorts5';
@@ -268,6 +318,26 @@ angular.module('myApp.Task5', ['ngRoute'])
                         if (err.status === 401) {
                             refreshToken($scope.addHome);
                         }
+
+                        if(err.status === 400){
+                            $scope.inputts5 = '';
+                            $scope.hasErrTS5 = 'has-errorts5';
+                            $scope.hasErrBtn = 'has-errorts5';
+                            $scope.InvFeedBackHome = err.data;
+                        }
+
+                        if (err.status === 403) {
+                            localStorage.removeItem("userToken");
+                            localStorage.removeItem("userRefreshToken");
+                            localStorage.removeItem("UserRole");
+                            $rootScope.isUser = '';
+                            window.location.href = '#!/Task2';
+                        }
+
+                        if(err.status === 405){
+                            alert("Error, try again");
+                        }
+
                     });
             } else {
                 $scope.hasErrTS5 = 'has-errorts5';
@@ -280,6 +350,7 @@ angular.module('myApp.Task5', ['ngRoute'])
 
         $scope.addRoom = function () {
             if (($scope.roomNm === '') || ($scope.roomNm.replace(/\s+/g, '') === 0)) {
+                $scope.hasErrRoom = 'has-errorts5';
                 $scope.hasErrRoom = 'has-errorts5';
                 $scope.InvFeedBackRoom = "The name cannot be empty or consist only of spaces";
                 return;
@@ -305,6 +376,25 @@ angular.module('myApp.Task5', ['ngRoute'])
                         if (err.status === 401) {
                             refreshToken($scope.addRoom);
                         }
+
+                        if(err.status === 400){
+                            $scope.roomNm = '';
+                            $scope.hasErrRoom = 'has-errorts5';
+                            $scope.InvFeedBackRoom = err.data;
+                        }
+
+                        if (err.status === 403) {
+                            localStorage.removeItem("userToken");
+                            localStorage.removeItem("userRefreshToken");
+                            localStorage.removeItem("UserRole");
+                            $rootScope.isUser = '';
+                            window.location.href = '#!/Task2';
+                        }
+
+                        if(err.status === 405){
+                            alert("Error, try again");
+                        }
+
                     });
             } else {
                 $scope.hasErrRoom = 'has-errorts5';
@@ -330,9 +420,23 @@ angular.module('myApp.Task5', ['ngRoute'])
                     getHomesName();
                 })
                 .catch((err) => {
+
                     if (err.status === 401) {
                         refreshToken($scope.deleteHome);
                     }
+
+                    if (err.status === 403) {
+                        localStorage.removeItem("userToken");
+                        localStorage.removeItem("userRefreshToken");
+                        localStorage.removeItem("UserRole");
+                        $rootScope.isUser = '';
+                        window.location.href = '#!/Task2';
+                    }
+
+                    if(err.status === 405){
+                        alert("Error, try again");
+                    }
+
                 });
 
         };
@@ -352,9 +456,23 @@ angular.module('myApp.Task5', ['ngRoute'])
                     getRoomsName();
                 })
                 .catch((err) => {
+
                     if (err.status === 401) {
                         refreshToken($scope.deleteHome);
                     }
+
+                    if (err.status === 403) {
+                        localStorage.removeItem("userToken");
+                        localStorage.removeItem("userRefreshToken");
+                        localStorage.removeItem("UserRole");
+                        $rootScope.isUser = '';
+                        window.location.href = '#!/Task2';
+                    }
+
+                    if(err.status === 405){
+                        alert("Error, try again");
+                    }
+
                 });
 
         };

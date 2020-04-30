@@ -42,6 +42,10 @@ angular.module('myApp.Control', ['ngRoute'])
                     }
 
                     if (err.status === 405) {
+                        localStorage.removeItem("userToken");
+                        localStorage.removeItem("userRefreshToken");
+                        localStorage.removeItem("UserRole");
+                        $rootScope.isUser = '';
                         window.location.href = '#!/Task2';
                     }
 
@@ -119,6 +123,10 @@ angular.module('myApp.Control', ['ngRoute'])
                     }
 
                     if (err.status === 405) {
+                        localStorage.removeItem("userToken");
+                        localStorage.removeItem("userRefreshToken");
+                        localStorage.removeItem("UserRole");
+                        $rootScope.isUser = '';
                         window.location.href = '#!/Task2';
                     }
 

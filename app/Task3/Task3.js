@@ -42,8 +42,10 @@ angular.module('myApp.Task3', ['ngRoute'])
                     }
 
                     if (err.status === 403) {
-                        $rootScope.isUser = false;
-                        localStorage.setItem('UserRole', '');
+                        localStorage.removeItem("userToken");
+                        localStorage.removeItem("userRefreshToken");
+                        localStorage.removeItem("UserRole");
+                        $rootScope.isUser = '';
                         window.location.href = '#!/Task2';
                     }
                     if (err.status === 400){
@@ -72,8 +74,10 @@ angular.module('myApp.Task3', ['ngRoute'])
                 .catch((err) => {
                     console.log(err.data);
                     if (err.status === 403) {
+                        localStorage.removeItem("userToken");
+                        localStorage.removeItem("userRefreshToken");
+                        localStorage.removeItem("UserRole");
                         $rootScope.isUser = '';
-                        localStorage.setItem('UserRole', '');
                         window.location.href = '#!/Task2';
                     }
                 });
@@ -275,6 +279,10 @@ angular.module('myApp.Task3', ['ngRoute'])
                         }
 
                         if(err.status === 403){
+                            localStorage.removeItem("userToken");
+                            localStorage.removeItem("userRefreshToken");
+                            localStorage.removeItem("UserRole");
+                            $rootScope.isUser = '';
                             window.location.href = '#!/Task2';
                         }
 
